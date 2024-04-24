@@ -1,0 +1,49 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: CD .NET
+
+on:
+  pull_request:
+    branches: [ "master", "feature/CD" ]
+    # On PR Merged on master
+  # pull_request:
+  #   types:
+  #   - closed
+  #   branches:
+  #   - master
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Chackout Project
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install go-msi
+      run: choco install -y "go-msi"
+    
+    - name: Build
+      run: dotnet build -c Release -verbosity:minimal
+
+    - name: Build Windows Installer MSI from exe file
+      uses: AliceOh/CreateWindowsInstaller@1.0.0
+      with:
+        exefile: 'SpeechSynth/bin/Release/SpeetchSynth.exe'
+
+    - name: Upload MSI for Windows to release page
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "test"
+        prerelease: true
+        title: "Windows Development Build"
+        files: |
+          SpeechSynth/bin/Release/SpeetchSynth.exe.msi
