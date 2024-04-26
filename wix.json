@@ -6,7 +6,7 @@
   "files": {
     "guid": "",
     "items": [
-      "bin/Release/SpeechSynth.exe"
+      "SpeechSynth.exe"
     ]
   },
   //"env": {
@@ -37,7 +37,7 @@
   },
   "choco": {
     "description": "generate MSI package for Your Product project",
-    "tags": "SpeechSynth.net",
+    "tags": "SpeechSynth.Net",
     "license-url": "https://opensource.org/licenses/MIT"
   }
 }

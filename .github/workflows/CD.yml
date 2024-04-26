@@ -33,10 +33,16 @@ jobs:
     - name: Build
       run: dotnet build -c Release -verbosity:minimal
 
+    - name: Prepare Create msix
+      run: |
+        mkdir application
+        cp SpeechSynth.Net/SpeechSynth/bin/Release/ application/
+    
+
     - name: Build Windows Installer MSI from exe file
       uses: AliceOh/CreateWindowsInstaller@1.0.0
       with:
-        exefile: 'SpeechSynth.Net/SpeechSynth/bin/Release/SpeetchSynth.exe'
+        exefile: 'SpeetchSynth.exe'
 
     - name: Upload MSI for Windows to release page
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -46,4 +52,4 @@ jobs:
         prerelease: true
         title: "Windows Development Build"
         files: |
-          SpeechSynth.Net/SpeechSynth/bin/Release/SpeetchSynth.exe.msi
+          SpeetchSynth.exe.msi
