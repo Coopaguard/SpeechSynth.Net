@@ -36,7 +36,7 @@ jobs:
     - name: Build Windows Installer MSI from exe file
       uses: AliceOh/CreateWindowsInstaller@1.0.0
       with:
-        exefile: 'SpeechSynth/bin/Release/SpeetchSynth.exe'
+        exefile: 'SpeechSynth.Net/SpeechSynth/bin/Release/SpeetchSynth.exe'
 
     - name: Upload MSI for Windows to release page
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -46,4 +46,4 @@ jobs:
         prerelease: true
         title: "Windows Development Build"
         files: |
-          SpeechSynth/bin/Release/SpeetchSynth.exe.msi
+          SpeechSynth.Net/SpeechSynth/bin/Release/SpeetchSynth.exe.msi
