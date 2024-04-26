@@ -5,7 +5,7 @@ name: CD .NET
 
 on:
   pull_request:
-    branches: [ "master", "feature/CD" ]
+    branches: [ "master", "feature/CICD" ]
     # On PR Merged on master
   # pull_request:
   #   types:
