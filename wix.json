@@ -24,6 +24,7 @@
   },
   "choco": {
     "description": "generate MSI package for Your Product project",
-    "tags": "SpeechSynth.Net"
+    "tags": "SpeechSynth.Net",
+    "license-url": "https://github.com/Coopaguard/SpeechSynth.Net?tab=GPL-3.0-1-ov-file#readme"
   }
 }
