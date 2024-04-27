@@ -24,7 +24,6 @@
   },
   "choco": {
     "description": "generate MSI package for Your Product project",
-    "tags": "SpeechSynth.Net",
-    "license-url": "https://opensource.org/licenses/MIT"
+    "tags": "SpeechSynth.Net"
   }
 }
