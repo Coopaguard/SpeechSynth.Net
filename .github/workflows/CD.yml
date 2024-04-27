@@ -38,6 +38,7 @@ jobs:
       run: |
         mkdir application
         cp SpeechSynth/bin/Release/ application/
+        cp LICENSE.TXT application/LICENSE.txt
     
 
     - name: Build Windows Installer MSI from exe file
