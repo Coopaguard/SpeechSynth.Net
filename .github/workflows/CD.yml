@@ -34,9 +34,10 @@ jobs:
       run: dotnet build -c Release -verbosity:minimal
 
     - name: Prepare Create msix
+      shell: pwsh
       run: |
         mkdir application
-        cp SpeechSynth.Net/SpeechSynth/bin/Release/ application/
+        cp SpeechSynth/bin/Release/ application/
     
 
     - name: Build Windows Installer MSI from exe file
