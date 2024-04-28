@@ -12,32 +12,36 @@
 
     <StandardDirectory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLFOLDER" Name="SpeechSynth.Net">
-            <Component Id="MetalComp">
+            <Component Id="MetalComp" >
               <File Source=".\SpeechSynth\bin\Release\net8.0-windows\ggml-metal.metal" Name="MetalFile" />
             </Component>
-
-          <Component Id="AppComponents" Directory="INSTALLFOLDER">
-            <CopyFile Id="CopyComp"/>
+          <Component Id="AppComponents">
+            <File Source=".\SpeechSynth\bin\Release\net8.0-windows\*.dll" Name="MetalFile" />
           </Component>
           <Component Id="ExeComp" >
             <File Source="./SpeechSynth/bin/Release/net8.0-windows/SpeechSynth.exe" Name="ExeFile" KeyPath="yes" />
           </Component>
           <Directory Id="Images" Name="Images">
-            <Component Subdirectory="Images">
+            <Component >
               <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.ico" Name="logoDarkIco" />
             </Component>
-            <Component Subdirectory="Images">
+            <Component >
               <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.png" Name="logoDarkPng" />
             </Component>
-            <Component Subdirectory="Images">
+            <Component >
               <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Light.ico" Name="LogoLightIco" />
             </Component>
-            <Component Subdirectory="Images">
+            <Component >
               <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Light.png" Name="LogoLightPng" />
             </Component>
           </Directory>
           <Directory Id="runtimes" Name="runtimes">
-            <Directory Id="TargetRuntime" Name="win-x64"></Directory>
+            <Directory Id="TargetRuntime" Name="win-x64">
+              <Component >
+                <File Source=".\SpeechSynth\bin\Release\net8.0-windows\runtimes\TargetRuntime\whisper.dll" Name="whisperRuntime" />
+              </Component>
+            </Directory>
+            
           </Directory>
         </Directory>
     </StandardDirectory>
@@ -50,8 +54,9 @@
 
 
     <Feature Id="MainComponent">
-      <ComponentGroupRef Id="AppComponents" />
-      <Component Id="MetalComp" />
+      <Component Id="AppComponents" Guid="823ee2b2-2523-4104-9e59-3bb4fb83ce30" />
+      <Component Id="MetalComp" Guid="0db44b85-28eb-425b-ad10-fcd3cb72a466" />
+      <Component Id="ExeComp" Guid="0db44b85-28eb-425b-ad10-fcd3cb72a467" />
     </Feature>
 
   </Package>
