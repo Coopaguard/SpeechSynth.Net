@@ -19,7 +19,7 @@
           <Component Id="AppComponents" Directory="INSTALLFOLDER">
             <CopyFile Id="CopyComp"/>
           </Component>
-          <Component Id=">"
+          <Component Id="ExeComp" >
             <File Source="./SpeechSynth/bin/Release/net8.0-windows/SpeechSynth.exe" Name="ExeFile" KeyPath="yes" />
           </Component>
           <Directory Id="Images" Name="Images">
