@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package 
+    Name="SpeechSynth" 
+    Manufacturer="CoopaTech"
+    Compressed="true"
+    Scope="perUserOrMachine"
+    Version="1.0.0.0" 
+    UpgradeCode="c9cbd32c-0db8-40e5-a43c-df6f30a1d7d7">
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="SpeechSynth.Net">
+            <Component Id="MetalComp">
+              <File Source=".\SpeechSynth\bin\Release\net8.0-windows\ggml-metal.metal" Name="MetalFile" />
+            </Component>
+
+          <Component Id="AppComponents" Directory="INSTALLFOLDER">
+            <CopyFile Id="CopyComp"/>
+          </Component>
+          <Component Id=">"
+            <File Source="./SpeechSynth/bin/Release/net8.0-windows/SpeechSynth.exe" Name="ExeFile" KeyPath="yes" />
+          </Component>
+          <Directory Id="Images" Name="Images">
+            <Component Subdirectory="Images">
+              <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.ico" Name="logoDarkIco" />
+            </Component>
+            <Component Subdirectory="Images">
+              <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.png" Name="logoDarkPng" />
+            </Component>
+            <Component Subdirectory="Images">
+              <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Light.ico" Name="LogoLightIco" />
+            </Component>
+            <Component Subdirectory="Images">
+              <File Source=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Light.png" Name="LogoLightPng" />
+            </Component>
+          </Directory>
+          <Directory Id="runtimes" Name="runtimes">
+            <Directory Id="TargetRuntime" Name="win-x64"></Directory>
+          </Directory>
+        </Directory>
+    </StandardDirectory>
+    
+    
+     
+      <Component Subdirectory="TargetRuntime">
+        <File Source=".\SpeechSynth\bin\Release\net8.0-windows\runtimes\win-x64\whisper.dll" Name="whisperRunTime" />
+      </Component>
+
+
+    <Feature Id="MainComponent">
+      <ComponentGroupRef Id="AppComponents" />
+      <Component Id="MetalComp" />
+    </Feature>
+
+  </Package>
+</Wix>
