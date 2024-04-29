@@ -158,9 +158,6 @@ namespace SpeechSynth
 
         public void SetPosition()
         {
-            this.Height = 500;
-            this.Width = 388;
-
             this.Location = new Point(
                 Screen.PrimaryScreen.Bounds.Width - (this.Width + 10),
                 Screen.PrimaryScreen.Bounds.Height - (this.Height + 50));

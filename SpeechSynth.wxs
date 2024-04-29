@@ -4,14 +4,14 @@
     Name="SpeechSynth" 
     Manufacturer="CoopaTech"
     Compressed="true"
-    Scope="perUserOrMachine"
+    Scope="perMachine"
     Version="1.0.0.0" 
     UpgradeCode="c9cbd32c-0db8-40e5-a43c-df6f30a1d7d7">
 
     <MediaTemplate EmbedCab="yes" />
 
-	<Icon Id="WINDOWS.ico" SourceFile=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.ico" />
-	<Property Id="ARPPRODUCTICON" Value=".\SpeechSynth\bin\Release\net8.0-windows\Image\Logo-Dark.ico" />
+	<Icon Id="WINDOWS.ico" SourceFile=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish\Images\Logo-Dark.ico" />
+	<Property Id="ARPPRODUCTICON" Value=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish\Image\Logo-Dark.ico" />
 	
     <StandardDirectory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLFOLDER" Name="SpeechSynth.Net">
@@ -24,35 +24,60 @@
         </Directory>
     </StandardDirectory>
 
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="ApplicationShortcut" Guid="7a51e7a5-e33e-4893-8dc9-f48f546e1341">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="SpeechSynth"
+                  Description="Speech to texte application"
+                  Target="[#ExeComp]"
+                  WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveFolder Id="CleanUpShortCut" Directory="ProgramMenuFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Coopatech\SpeechSynth" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </StandardDirectory>
+
 	  <ComponentGroup
 		  Id="dllComp"
 		  Directory="Images"
-		  Source=".\SpeechSynth\bin\Release\net8.0-windows\Images">
+		  Source=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish\Images">
 		  <Files Include="*.*" />
 	  </ComponentGroup>
 
 	  <ComponentGroup
 		  Id="ImgComp"
 		  Directory="INSTALLFOLDER"
-		  Source=".\SpeechSynth\bin\Release\net8.0-windows">
+		  Source=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish">
 		  <Files Include="*.dll" />
 	  </ComponentGroup>
+
+    <CustomAction 
+      Id="EXECUTE_AFTER_FINALIZE"
+      Execute="immediate"
+      Impersonate="no"
+      Return="asyncNoWait"
+      FileRef="ExeComp"
+      ExeCommand="" />
+
+    <InstallExecuteSequence>
+      <Custom Action="EXECUTE_AFTER_FINALIZE" After="InstallFinalize"></Custom>
+    </InstallExecuteSequence>
 	  
 	  <Feature 
-		Id="MainComponent"
-		Title="Installer" 
-		Level="1"
-		Description="The complete installation"
-		Display="expand"
-		ConfigurableDirectory="INSTALLFOLDER">
+		  Id="MainComponent"
+		  Title="Installer" 
+		  Level="1"
+		  Description="The complete installation"
+		  Display="expand"
+		  ConfigurableDirectory="INSTALLFOLDER">
 		<Component Id="ExeComp" Guid="823ee2b2-2523-4104-9e59-3bb4fb83ce30" >
-			<File Source="./SpeechSynth/bin/Release/net8.0-windows/SpeechSynth.exe" Name="ExeFile" KeyPath="yes" />
+			<File Source=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish\SpeechSynth.exe" Id="ExeComp"  KeyPath="yes" />
 		</Component>
-		<Component Subdirectory="TargetRuntime" Guid="b8f873d2-9e6c-401d-829e-cf11c039c111">
-			<File Source=".\SpeechSynth\bin\Release\net8.0-windows\runtimes\win-x64\whisper.dll" Name="whisperRunTime" />
+		<Component Subdirectory="runtimes\win-x64" Guid="b8f873d2-9e6c-401d-829e-cf11c039c111">
+			<File Source=".\SpeechSynth\bin\Release\net8.0-windows\win-x64\publish\runtimes\win-x64\whisper.dll"  />
 		</Component>
 		<ComponentGroupRef Id="dllComp" />
 		<ComponentGroupRef Id="ImgComp" />
+    <ComponentRef Id="ApplicationShortcut" />
 	</Feature>
   </Package>
 </Wix>
