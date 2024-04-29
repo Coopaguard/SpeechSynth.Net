@@ -4,14 +4,12 @@
 name: CD .NET
 
 on:
-  pull_request:
-    branches: [ "master", "feature/CD" ]
     # On PR Merged on master
-  # pull_request:
-  #   types:
-  #   - closed
-  #   branches:
-  #   - master
+  pull_request:
+    types:
+    - closed
+    branches:
+    - master
 
 jobs:
   build:
@@ -27,23 +25,22 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Install go-msi
-      run: choco install -y "go-msi"
-    
     - name: Build
       run: dotnet build -c Release -verbosity:minimal
 
-    - name: Build Windows Installer MSI from exe file
-      uses: AliceOh/CreateWindowsInstaller@1.0.0
-      with:
-        exefile: 'SpeechSynth/bin/Release/SpeetchSynth.exe'
+    - name: Create msi
+      shell: pwsh
+      run: |
+        dotnet tool install --global wix
+        wix build ./SpeechSynth.wxs
 
     - name: Upload MSI for Windows to release page
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "test"
-        prerelease: true
-        title: "Windows Development Build"
+        automatic_release_tag: "windows"
+        prerelease: false
+        title: "Windows x64 Installer"
         files: |
-          SpeechSynth/bin/Release/SpeetchSynth.exe.msi
+          SpeechSynth.msi
+          SpeechSynth.wixpdb

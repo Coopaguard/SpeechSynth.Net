@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package 
+    Name="SpeechSynth" 
+    Manufacturer="CoopaTech"
+    Compressed="true"
+    Scope="perUserOrMachine"
+    Version="1.0.0.0" 
+    UpgradeCode="c9cbd32c-0db8-40e5-a43c-df6f30a1d7d7">
+
+    <MediaTemplate EmbedCab="yes" />
+
+	<Icon Id="WINDOWS.ico" SourceFile=".\SpeechSynth\bin\Release\net8.0-windows\Images\Logo-Dark.ico" />
+	<Property Id="ARPPRODUCTICON" Value=".\SpeechSynth\bin\Release\net8.0-windows\Image\Logo-Dark.ico" />
+	
+    <StandardDirectory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="SpeechSynth.Net">
+          <Directory Id="Images" Name="Images">
+          </Directory>
+          <Directory Id="runtimes" Name="runtimes">
+            <Directory Id="TargetRuntime" Name="win-x64">
+            </Directory>
+          </Directory>
+        </Directory>
+    </StandardDirectory>
+
+	  <ComponentGroup
+		  Id="dllComp"
+		  Directory="Images"
+		  Source=".\SpeechSynth\bin\Release\net8.0-windows\Images">
+		  <Files Include="*.*" />
+	  </ComponentGroup>
+
+	  <ComponentGroup
+		  Id="ImgComp"
+		  Directory="INSTALLFOLDER"
+		  Source=".\SpeechSynth\bin\Release\net8.0-windows">
+		  <Files Include="*.dll" />
+	  </ComponentGroup>
+	  
+	  <Feature 
+		Id="MainComponent"
+		Title="Installer" 
+		Level="1"
+		Description="The complete installation"
+		Display="expand"
+		ConfigurableDirectory="INSTALLFOLDER">
+		<Component Id="ExeComp" Guid="823ee2b2-2523-4104-9e59-3bb4fb83ce30" >
+			<File Source="./SpeechSynth/bin/Release/net8.0-windows/SpeechSynth.exe" Name="ExeFile" KeyPath="yes" />
+		</Component>
+		<Component Subdirectory="TargetRuntime" Guid="b8f873d2-9e6c-401d-829e-cf11c039c111">
+			<File Source=".\SpeechSynth\bin\Release\net8.0-windows\runtimes\win-x64\whisper.dll" Name="whisperRunTime" />
+		</Component>
+		<ComponentGroupRef Id="dllComp" />
+		<ComponentGroupRef Id="ImgComp" />
+	</Feature>
+  </Package>
+</Wix>

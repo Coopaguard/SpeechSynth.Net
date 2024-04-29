@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 		.github\workflows\CI.yml = .github\workflows\CI.yml
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
-		wix.json = wix.json
+		SpeechSynth.wxs = SpeechSynth.wxs
 	EndProjectSection
 EndProject
 Global

@@ -41,11 +41,9 @@ namespace SpeechSynth
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(
-                Screen.PrimaryScreen.Bounds.Width - (this.Width + 10),
-                Screen.PrimaryScreen.Bounds.Height - (this.Height + 50));
 
             InitView();
+            SetPosition();
 
             _keyboardHook.KeyUp += _keyboardHook_KeyUp;
             _keyboardHook.KeyDown += _keyboardHook_KeyDown;
@@ -91,7 +89,6 @@ namespace SpeechSynth
             else
             {
                 e.Cancel = true;
-                this.WindowState = FormWindowState.Minimized;
                 this.Hide();
             }
         }
@@ -100,6 +97,7 @@ namespace SpeechSynth
         {
             _options.Save().Wait();
         }
+
 
         #region privates view functions
 
@@ -158,6 +156,16 @@ namespace SpeechSynth
            
         }
 
+        public void SetPosition()
+        {
+            this.Height = 500;
+            this.Width = 388;
+
+            this.Location = new Point(
+                Screen.PrimaryScreen.Bounds.Width - (this.Width + 10),
+                Screen.PrimaryScreen.Bounds.Height - (this.Height + 50));
+
+        }
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
@@ -180,6 +188,7 @@ namespace SpeechSynth
         }
 
         #endregion
+
 
         #region Config Events
 
@@ -248,6 +257,7 @@ namespace SpeechSynth
 
         #endregion
 
+
         #region keys Event
 
         private void _keyboardHook_KeyUp(Keys key, bool Shift, bool Ctrl, bool Alt)
@@ -288,6 +298,7 @@ namespace SpeechSynth
         }
 
         #endregion
+
 
         #region Privates parse Function
 
@@ -331,6 +342,7 @@ namespace SpeechSynth
 
         #endregion
 
+
         #region Tray Event 
 
         private void BrowserSite(object? sender, EventArgs e)
@@ -352,6 +364,7 @@ namespace SpeechSynth
 
             // Activate the form.
             this.Activate();
+            this.Show();
             this.Focus();
         }
 
