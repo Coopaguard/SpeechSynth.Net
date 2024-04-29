@@ -27,31 +27,22 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
-    - name: Install go-msi
-      run: choco install -y "go-msi"
-    
     - name: Build
       run: dotnet build -c Release -verbosity:minimal
 
-    - name: Prepare Create msix
+    - name: Create msi
       shell: pwsh
       run: |
-        mkdir application
-        cp SpeechSynth/bin/Release/ application/
-        cp LICENSE.TXT application/LICENSE.txt
-    
-
-    - name: Build Windows Installer MSI from exe file
-      uses: AliceOh/CreateWindowsInstaller@1.0.0
-      with:
-        exefile: 'SpeetchSynth.exe'
+        dotnet tool install --global wix
+        wix build ./SpeechSynth.wxs
 
     - name: Upload MSI for Windows to release page
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "test"
+        automatic_release_tag: "latest"
         prerelease: true
         title: "Windows Development Build"
         files: |
-          SpeetchSynth.exe.msi
+          SpeechSynth.msi
+          SpeechSynth.wixpdb
