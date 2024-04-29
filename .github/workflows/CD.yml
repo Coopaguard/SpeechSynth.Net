@@ -42,6 +42,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "windows"
         prerelease: true
-        title: "Windows Development Build"
+        title: "Windows x64 Installer"
         files: |
-          SpeetchSynth.exe.msi
+          SpeechSynth.msi
+          SpeechSynth.wixpdb
