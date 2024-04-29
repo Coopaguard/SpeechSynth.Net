@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Chackout Project
+    - name: Checkout Project
       uses: actions/checkout@v4
     
     - name: Setup .NET
@@ -36,13 +36,26 @@ jobs:
         dotnet tool install --global wix
         wix build ./SpeechSynth.wxs
 
-    - name: Upload MSI for Windows to release page
-      uses: "marvinpinto/action-automatic-releases@latest"
+# Create the release:  https://github.com/actions/create-release
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        title: "Windows Development Build"
-        files: |
-          SpeechSynth.msi
-          SpeechSynth.wixpdb
+        tag_name: ${{ github.ref }}
+        release_name:  Release.${{ github.ref }}
+        draft: false
+        prerelease: false #SET to false for offical release
+
+    # Upload release asset:   https://github.com/actions/upload-release-asset
+    - name: Updload release asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}  # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+        asset_path: SpeechSynth.msi
+        asset_name: SpeechSynth.Net.msi
+        asset_content_type: application/x-msi
