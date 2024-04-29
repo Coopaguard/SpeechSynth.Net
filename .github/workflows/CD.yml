@@ -4,14 +4,12 @@
 name: CD .NET
 
 on:
-  pull_request:
-    branches: [ "master", "feature/CICD" ]
     # On PR Merged on master
-  # pull_request:
-  #   types:
-  #   - closed
-  #   branches:
-  #   - master
+  pull_request:
+    types:
+    - closed
+    branches:
+    - master
 
 jobs:
   build:
@@ -41,7 +39,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "windows"
-        prerelease: true
+        prerelease: false
         title: "Windows x64 Installer"
         files: |
           SpeechSynth.msi
