@@ -211,7 +211,7 @@ namespace SpeechSynth
             if (CBModel.SelectedItem != null &&
                 CBModel.SelectedItem?.ToString() != _options.Value.ModelSize.ToString())
             {
-                _options.Value.ModelSize = Enum.Parse<GgmlType>(CBModel.SelectedItem.ToString() ?? "Base");
+                _options.Value.ModelSize = Enum.Parse<GgmlType>(CBModel.SelectedItem?.ToString() ?? "Base");
                 VerifyModel();
             }
         }
