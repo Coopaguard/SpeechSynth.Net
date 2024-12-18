@@ -1,7 +1,9 @@
 using Microsoft.Win32;
+using NAudio.Utils;
 using SpeechSynth.Lib;
 using SpeechSynth.Lib.Interfaces;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using Whisper.net.Ggml;
 
 namespace SpeechSynth
@@ -228,26 +230,26 @@ namespace SpeechSynth
             {
                 _options.Value.StartWithWindows = CbStartWithWindows.Checked;
 
-                var subKey = Registry
-                    .CurrentUser
-                    .OpenSubKey("Software")?
-                    .OpenSubKey("Microsoft")?
-                    .OpenSubKey("Windows")?
-                    .OpenSubKey("CurrentVersion")?
-                    .OpenSubKey("Run", true);
+                var psAddString = "New-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -Name SpeechSynth -Value \"" + Application.ExecutablePath + "\"  -PropertyType \"String\"";
+                var psRmString = "Remove-ItemProperty -Path HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Run -Name SpeechSynth";
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.FileName = @"powershell.exe";
+                startInfo.RedirectStandardInput = true;
+                startInfo.Verb = "runas";
+                Process process = new Process();
+                process.StartInfo = startInfo;
+                process.Start();
+
                 if (_options.Value.StartWithWindows)
                 {
-                    if (subKey.GetValue("SpeechSynth") == null)
-                        subKey.SetValue(
-                        "SpeechSynth",
-                        $"\"{Application.ExecutablePath}\"",
-                        RegistryValueKind.String);
+                    process.StandardInput.WriteLine(psAddString);
+                    process.StandardInput.WriteLine("exit");
                 }
                 else
                 {
-                    if (subKey.GetValue("SpeechSynth") != null)
-                        subKey.DeleteValue(
-                        "SpeechSynth");
+                    process.StandardInput.WriteLine(psRmString);
+                    process.StandardInput.WriteLine("exit");
                 }
             }
         }
